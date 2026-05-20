@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-node-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: api-node
+  template:
+    metadata:
+      labels:
+        app: api-node
+    spec:
+      containers:
+      - name: api-node
+        # IMPORTANTE: Reemplaza ESTA_URL_AQUI con la URL de tu imagen en GitHub Packages
+        image: ghcr.io/guytho1996/devops-lab-node:f7104af7a75c48307c296a80d38e885dfb996a6e
+        ports:
+        - containerPort: 3000
+        
+        # Readiness Probe: Verifica si el pod está listo para recibir tráfico
+        readinessProbe:
+          httpGet:
+            path: /owners
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          
+        # Liveness Probe: Verifica si el pod sigue vivo o si se quedó "congelado"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 15
+          periodSeconds: 20
