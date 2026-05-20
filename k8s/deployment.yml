@@ -35,15 +35,15 @@ spec:
         # Readiness Probe: Verifica si el pod está listo para recibir tráfico
         readinessProbe:
           httpGet:
-            path: /owners
+            path: /actuator/health/readiness
             port: 3000
-          initialDelaySeconds: 5
+          initialDelaySeconds: 15
           periodSeconds: 10
           
         # Liveness Probe: Verifica si el pod sigue vivo o si se quedó "congelado"
         livenessProbe:
           httpGet:
-            path: /
+            path: /actuator/health/liveness
             port: 3000
-          initialDelaySeconds: 15
+          initialDelaySeconds: 30
           periodSeconds: 20
