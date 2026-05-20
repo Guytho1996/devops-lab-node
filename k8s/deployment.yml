@@ -11,14 +11,27 @@ spec:
     metadata:
       labels:
         app: api-node
+        # NUEVO: Instrucciones para que Prometheus lea las métricas
+      annotations:
+            prometheus.io/scrape: "true"
+            prometheus.io/port: "3000"
+            prometheus.io/path: "/metrics"
     spec:
       containers:
       - name: api-node
-        # IMPORTANTE: Reemplaza ESTA_URL_AQUI con la URL de tu imagen en GitHub Packages
+      
+        
         image: ghcr.io/guytho1996/devops-lab-node:f7104af7a75c48307c296a80d38e885dfb996a6e
         ports:
         - containerPort: 3000
         
+        # NUEVO: Límites de CPU para que el HPA pueda medir
+        resources:
+          requests:
+            cpu: "50m"
+          limits:
+            cpu: "100m"
+
         # Readiness Probe: Verifica si el pod está listo para recibir tráfico
         readinessProbe:
           httpGet:

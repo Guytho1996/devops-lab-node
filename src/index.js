@@ -2,6 +2,10 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
+const promBundle = require('express-prom-bundle');
+const metricsMiddleware = promBundle({ includeMethod: true, includePath: true });
+app.use(metricsMiddleware);
+
 // Endpoint principal para el taller (Paso 9 del examen: Simular incidente)
 app.get('/owners', (req, res) => {
     // Más adelante cambiaremos este 200 por un 500 para simular un bug en producción
